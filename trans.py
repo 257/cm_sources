@@ -56,7 +56,7 @@ class Source(Base):
         logger.debug("TRANS ctx['base']: [%s]", ctx['base'])
         logger.debug("TRANS len(base): [%d]", len(base))
 
-        args = ['/home/tl/.local/bin/json_parser', ctx['base']]
+        args = ['json_parser', ctx['base']]
 
         proc = subprocess.Popen(args=args,
                 stdin=subprocess.PIPE,
