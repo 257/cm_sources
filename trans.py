@@ -10,7 +10,7 @@
 # modules required by this module
 from cm import register_source, getLogger, Base
 register_source(name='trans',
-        priority=9,
+        priority=2,
         scoping=0,
         abbreviation='trans',
         word_pattern=r'[\w/]+',
@@ -56,7 +56,7 @@ class Source(Base):
         logger.debug("TRANS ctx['base']: [%s]", ctx['base'])
         logger.debug("TRANS len(base): [%d]", len(base))
 
-        args = ['/home/tl/.local/bin/trans_suggest', ctx['base']]
+        args = ['/home/tl/.local/bin/json_parser', ctx['base']]
 
         proc = subprocess.Popen(args=args,
                 stdin=subprocess.PIPE,
@@ -65,12 +65,13 @@ class Source(Base):
         result, errs = proc.communicate(base, timeout=4)
 
         logger.debug("TRANS args: [%s]", args)
-        logger.debug("TRANS errs: [%s]", errs.decode('utf-8'))
-        logger.info("args: %s, result: [%s]", args, result.decode())
+        # logger.debug("TRANS errs: [%s]", errs.decode('utf-8'))
+        # logger.info("args: %s, result: [%s]", args, result.decode())
         logger.info("TRANS result: [%s]", result.decode('utf-8'))
 
 
-        matches = result.decode('utf-8').splitlines()
+        logger.info("TRANS RESULTS: [%s]", result)
+        matches = json.loads(result.decode('utf-8'))
         logger.info("TRANS matches: [%s]", matches)
 
         self.complete(info, ctx, ctx['startcol'], matches)
